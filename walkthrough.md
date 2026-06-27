@@ -1,6 +1,6 @@
-# Migration Walkthrough - Phase 1, 2, 3, 4 & 5 Complete (up to 5B)
+# Migration Walkthrough - Phase 1, 2, 3, 4 & 5 Complete (up to 5C)
 
-We have successfully completed **Phase 1: Environment, Global Styles, Theme & Context Providers**, **Phase 2: Hooks, Utilities & Services**, **Phase 3: Next.js API Proxy Route & Protected Route Wrapper**, **Phase 4: Authentication Pages Migration**, **Phase 5A: Dashboard Shell & Data Fetching**, and **Phase 5B: Shared UI Components Migration**. The project compiles and builds successfully with ESLint checks passing.
+We have successfully completed **Phase 1: Environment, Global Styles, Theme & Context Providers**, **Phase 2: Hooks, Utilities & Services**, **Phase 3: Next.js API Proxy Route & Protected Route Wrapper**, **Phase 4: Authentication Pages Migration**, **Phase 5A: Dashboard Shell & Data Fetching**, **Phase 5B: Shared UI Components Migration**, and **Phase 5C: Overview Panel Migration**. The project compiles and builds successfully with ESLint checks passing.
 
 ---
 
@@ -76,7 +76,7 @@ We have successfully completed **Phase 1: Environment, Global Styles, Theme & Co
 
 ---
 
-## Created or Modified Files (Phase 5A & 5B)
+## Created or Modified Files (Phase 5A, 5B & 5C)
 
 ### 1. Dashboard Layout & Server Fetching (5A)
 - [MODIFY] [`app/dashboard/page.js`](file:///Users/medhabhardwaj/Desktop/devpulse-next/app/dashboard/page.js) - Server Component that handles parallel data fetching via `Promise.allSettled()` and renders the main dashboard shell.
@@ -86,7 +86,10 @@ We have successfully completed **Phase 1: Environment, Global Styles, Theme & Co
 ### 2. Shared UI Components Migration (5B)
 - [NEW] [`components/shared/Badge.jsx`](file:///Users/medhabhardwaj/Desktop/devpulse-next/components/shared/Badge.jsx) - Pure presentational badge. Remains a **Server Component**.
 - [NEW] [`components/shared/SectionTitle.jsx`](file:///Users/medhabhardwaj/Desktop/devpulse-next/components/shared/SectionTitle.jsx) - Pure presentational panel section header. Remains a **Server Component**.
-- [MODIFY] [`components/shared/StatCard.jsx`](file:///Users/medhabhardwaj/Desktop/devpulse-next/components/shared/StatCard.jsx) - Pure presentational card showing metrics and dynamically rendering passed Lucide icon classes. Remains a **Server Component**.
+- [MODIFY] [`components/shared/StatCard.jsx`](file:///Users/medhabhardwaj/Desktop/devpulse-next/components/shared/StatCard.jsx) - Pure presentational card showing metrics. Remains a **Server Component**.
+
+### 3. Overview Panel Migration (5C)
+- [MODIFY] [`components/panels/OverviewPanel.jsx`](file:///Users/medhabhardwaj/Desktop/devpulse-next/components/panels/OverviewPanel.jsx) - Replaced compiler stub with the migrated layout containing the overview stats cards and grid. Remains a **Server Component**.
 
 ---
 
@@ -112,5 +115,7 @@ We have successfully completed **Phase 1: Environment, Global Styles, Theme & Co
    In Next.js, child Client Components automatically re-render when props passed from a Server Component update. Instead of creating redundant local React states inside `DevPulseDashboard` (which would require complex `useEffect` synchronization callbacks that trigger ESLint cascading render warnings), we consume the server data props directly.
 10. **Modern Transition-Based Refresh Flow (Phase 5A)**:
     We replaced custom fetching state timers with standard Next.js transitions (`useTransition`). Clicking "Refresh" triggers `router.refresh()`, instructing the server component to re-fetch the data. The component tracks the reload transition status via the `isPending` state natively, offering loading overlays without manual timer states.
-11. **Presentational Server Components (Phase 5B)**:
-    Shared UI items (`Badge`, `SectionTitle`, and `StatCard`) do not use state, hooks, or browser features. Therefore, they are compiled as Server Components by default, reducing client-side bundle sizes while rendering correctly.
+11. **Presentational Server Components (Phase 5B & 5C)**:
+    Shared UI items (`Badge`, `SectionTitle`, and `StatCard`) and their panel container (`OverviewPanel`) do not use state, hooks, or browser features. Therefore, they are compiled as Server Components by default, reducing client-side bundle sizes while rendering correctly.
+12. **Data Flow to OverviewPanel**:
+    The routes page `app/dashboard/page.js` fetches raw data parallelly and passes it to `DevPulseDashboard` as initial data props. The dashboard calculates panel datasets via helper functions (`buildPanelData`) and passes the computed overview counts down to `OverviewPanel` as plain props.

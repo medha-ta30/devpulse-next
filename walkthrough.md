@@ -1,6 +1,6 @@
-# Migration Walkthrough - Phase 1, 2, 3, 4 & 5 Complete (up to 5F)
+# Migration Walkthrough - Phase 1, 2, 3, 4 & 5 Complete (up to 5H)
 
-We have successfully completed **Phase 1: Environment, Global Styles, Theme & Context Providers**, **Phase 2: Hooks, Utilities & Services**, **Phase 3: Next.js API Proxy Route & Protected Route Wrapper**, **Phase 4: Authentication Pages Migration**, **Phase 5A: Dashboard Shell & Data Fetching**, **Phase 5B: Shared UI Components Migration**, **Phase 5C: Overview Panel Migration**, **Phase 5D: Users Panel Migration**, **Phase 5E: Posts Panel Migration**, and **Phase 5F: Productivity Panel Migration**. The project compiles and builds successfully with ESLint checks passing.
+We have successfully completed **Phase 1: Environment, Global Styles, Theme & Context Providers**, **Phase 2: Hooks, Utilities & Services**, **Phase 3: Next.js API Proxy Route & Protected Route Wrapper**, **Phase 4: Authentication Pages Migration**, **Phase 5A: Dashboard Shell & Data Fetching**, **Phase 5B: Shared UI Components Migration**, **Phase 5C: Overview Panel Migration**, **Phase 5D: Users Panel Migration**, **Phase 5E: Posts Panel Migration**, **Phase 5F: Productivity Panel Migration**, **Phase 5G: Countries Panel Migration**, and **Phase 5H: Trivia Panel Migration**. The project compiles and builds successfully with ESLint checks passing.
 
 ---
 
@@ -76,7 +76,7 @@ We have successfully completed **Phase 1: Environment, Global Styles, Theme & Co
 
 ---
 
-## Created or Modified Files (Phase 5A, 5B, 5C, 5D, 5E & 5F)
+## Created or Modified Files (Phase 5A, 5B, 5C, 5D, 5E, 5F, 5G & 5H)
 
 ### 1. Dashboard Layout & Server Fetching (5A)
 - [MODIFY] [`app/dashboard/page.js`](file:///Users/medhabhardwaj/Desktop/devpulse-next/app/dashboard/page.js) - Server Component that handles parallel data fetching via `Promise.allSettled()` and renders the main dashboard shell.
@@ -99,6 +99,12 @@ We have successfully completed **Phase 1: Environment, Global Styles, Theme & Co
 
 ### 6. Productivity Panel Migration (5F)
 - [MODIFY] [`components/panels/ProductivityPanel.jsx`](file:///Users/medhabhardwaj/Desktop/devpulse-next/components/panels/ProductivityPanel.jsx) - Replaced compiler stub with the migrated vertical progress layout containing horizontal bar charts. Runs as a **Client Component** (uses `"use client"`).
+
+### 7. Countries Panel Migration (5G)
+- [MODIFY] [`components/panels/CountriesPanel.jsx`](file:///Users/medhabhardwaj/Desktop/devpulse-next/components/panels/CountriesPanel.jsx) - Replaced compiler stub with search-based grid and population histogram charts. Runs as a **Client Component** (uses `"use client"`).
+
+### 8. Trivia Panel Migration (5H)
+- [MODIFY] [`components/panels/TriviaPanel.jsx`](file:///Users/medhabhardwaj/Desktop/devpulse-next/components/panels/TriviaPanel.jsx) - Replaced compiler stub with dynamic donut charts and category list cards. Runs as a **Client Component** (uses `"use client"`).
 
 ---
 
@@ -126,7 +132,7 @@ We have successfully completed **Phase 1: Environment, Global Styles, Theme & Co
     We replaced custom fetching state timers with standard Next.js transitions (`useTransition`). Clicking "Refresh" triggers `router.refresh()`, instructing the server component to re-fetch the data. The component tracks the reload transition status via the `isPending` state natively, offering loading overlays without manual timer states.
 11. **Presentational Server Components (Phase 5B, 5C & 5D)**:
     Shared UI items (`Badge`, `SectionTitle`, and `StatCard`) and their panel containers (`OverviewPanel`, `UsersPanel`) do not use state, hooks, or browser features. Therefore, they are compiled as Server Components by default, reducing client-side bundle sizes while rendering correctly.
-12. **Client Components for Interactive Charts (Phase 5E & 5F)**:
-    `PostsPanel` and `ProductivityPanel` render interactive progress elements using `recharts`. Because Recharts queries DOM boundaries and measurements that depend on browser SVG dimensions and `window` objects, they must run on the client. Therefore, we configured both as **Client Components** using `"use client"`.
+12. **Client Components for Interactive Charts (Phase 5E, 5F, 5G & 5H)**:
+    `PostsPanel`, `ProductivityPanel`, `CountriesPanel`, and `TriviaPanel` render interactive components using `recharts` (PieCharts, BarCharts, horizontal metrics). Because Recharts queries DOM boundaries and measurements that depend on browser SVG dimensions and `window` objects, they must run on the client. Therefore, we configured them as **Client Components** using `"use client"`.
 13. **Data Flow**:
-    The routes page `app/dashboard/page.js` fetches raw data parallelly and passes it to `DevPulseDashboard` as initial data props. The dashboard aggregates and processes todos via `productivityTracker(users, todos)` inside the `buildPanelData` routine and passes the computed output (`productivityData`) down to `ProductivityPanel` to render.
+    The routes page `app/dashboard/page.js` fetches raw data parallelly and passes it to `DevPulseDashboard` as initial data props. The dashboard aggregates and processes trivia items via `triviaScorer(trivia)` inside the `buildPanelData` routine and passes the computed output (`triviaData`) down to `TriviaPanel` to render.

@@ -1,0 +1,177 @@
+.devpulse-dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+  font-family: var(--dp-font);
+}
+
+/* ── Header ── */
+.devpulse-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--dp-border);
+  flex-wrap: wrap;
+}
+
+.devpulse-header h1 {
+  margin: 0;
+  font-size: 1.625rem;
+  font-weight: 700;
+  color: var(--dp-text-heading);
+  letter-spacing: -0.03em;
+}
+
+.devpulse-header p {
+  margin: 3px 0 0;
+  font-size: 0.8125rem;
+  color: var(--dp-text);
+}
+
+/* ── Header buttons ── */
+.devpulse-header > div {
+  display: flex;
+  gap: 8px;
+}
+
+.devpulse-refresh-btn {
+  padding: 9px 18px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  font-family: var(--dp-font);
+  cursor: pointer;
+  border: 1px solid var(--dp-border);
+  border-radius: var(--dp-radius-sm);
+  background: var(--dp-surface);
+  color: var(--dp-text-heading);
+  box-shadow: var(--dp-shadow);
+  transition: all 0.15s ease;
+}
+
+.devpulse-refresh-btn:hover:not(:disabled) {
+  background: var(--dp-accent);
+  border-color: var(--dp-accent);
+  color: #ffffff;
+  box-shadow: var(--dp-shadow-md);
+}
+
+.devpulse-refresh-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ── Loading ── */
+.devpulse-loading {
+  margin: 0 0 24px;
+  padding: 14px 20px;
+  font-size: 0.875rem;
+  color: var(--dp-text);
+  background: var(--dp-surface);
+  border: 1px solid var(--dp-border);
+  border-radius: var(--dp-radius);
+  box-shadow: var(--dp-shadow);
+}
+
+/* ── Error banner ── */
+.devpulse-errors {
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  border-radius: var(--dp-radius);
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  background: rgba(220, 38, 38, 0.04);
+}
+
+.devpulse-errors h3 {
+  margin: 0 0 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--dp-danger);
+}
+
+.devpulse-errors ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 0.8125rem;
+  color: var(--dp-text);
+  line-height: 1.7;
+}
+
+/* ── Tab navigation ── */
+.devpulse-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 20px;
+  padding: 4px;
+  background: var(--dp-surface);
+  border: 1px solid var(--dp-border);
+  border-radius: var(--dp-radius);
+  box-shadow: var(--dp-shadow);
+}
+
+.devpulse-tab-btn {
+  padding: 9px 18px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  font-family: var(--dp-font);
+  cursor: pointer;
+  border: none;
+  border-radius: var(--dp-radius-sm);
+  background: transparent;
+  color: var(--dp-text);
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.devpulse-tab-btn:hover {
+  background: var(--dp-bg);
+  color: var(--dp-text-heading);
+}
+
+.devpulse-tab-btn.active {
+  background: var(--dp-accent);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+}
+
+/* ── Panel content ── */
+.devpulse-panel-content {
+  min-height: 300px;
+  padding: 24px;
+  background: var(--dp-surface);
+  border: 1px solid var(--dp-border);
+  border-radius: var(--dp-radius);
+  box-shadow: var(--dp-shadow);
+}
+
+/* ── Footer ── */
+.devpulse-dashboard > footer {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--dp-text);
+  padding-top: 16px;
+  border-top: 1px solid var(--dp-border);
+}
+
+@media (max-width: 640px) {
+  .devpulse-dashboard {
+    padding: 20px 14px 40px;
+  }
+
+  .devpulse-header h1 {
+    font-size: 1.375rem;
+  }
+
+  .devpulse-tab-btn {
+    padding: 8px 12px;
+    font-size: 0.75rem;
+  }
+
+  .devpulse-panel-content {
+    padding: 16px;
+  }
+}

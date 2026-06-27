@@ -6,6 +6,8 @@ import { fetchTrivia } from '@/services/trivia';
 import { fetchCountries } from '@/services/countries';
 import DevPulseDashboard from '@/components/dashboard/DevPulseDashboard';
 
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardPage() {
   const startTime = Date.now();
 

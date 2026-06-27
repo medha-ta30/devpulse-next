@@ -128,3 +128,59 @@ We have successfully completed **Phase 1: Environment, Global Styles, Theme & Co
     `PostsPanel`, `ProductivityPanel`, `CountriesPanel`, and `TriviaPanel` render interactive components using `recharts` (PieCharts, BarCharts). `ContactForm` contains form inputs and handles submission action bindings. Because these use browser APIs (`window`, DOM SVG queries) or interactive React hooks (`useForm`, `useState`), they are configured as **Client Components** using `"use client"`.
 13. **Contact Submission Complete Flow**:
     `ContactForm` captures input fields (name, email, message) and calls `submitFeedback(data)` in `services/contact.js`. The service pushes a client-side fetch request targeting the Next.js API endpoint `app/api/contact/route.js`. The API route runs a validation check and proxies the request to the Express backend endpoint `/api/contact/submit` (resolved via `NEXT_PUBLIC_API_URL` environment variables).
+
+---
+
+## Created or Modified Files (Phase 5J)
+
+### 1. Root Route Configuration
+- [MODIFY] [`app/page.js`](file:///Users/medhabhardwaj/Desktop/devpulse-next/app/page.js) - Removed the default Next.js starter page placeholder and replaced it with a dynamic client-side authentication redirection component.
+- [MODIFY] [`app/dashboard/page.js`](file:///Users/medhabhardwaj/Desktop/devpulse-next/app/dashboard/page.js) - Added `export const dynamic = 'force-dynamic'` config to prevent build-time static prerendering of dynamic API endpoints and avoid dynamic server usage warnings during Next.js build.
+
+---
+
+## Phase 5J Architectural & Routing Overview
+
+### 1. Root Route Redirect Strategy (`/`)
+Since authentication status is validated and verified client-side (via cookies and token retrieval within the client-side `AuthContext`), client-side redirection is utilized for the root path `/`. 
+When a visitor accesses `/`:
+- The component reads `loading` and `isLoggedIn` states from `useAuth()`.
+- While `loading` is `true`, it displays a consistent loading indicator.
+- Once loading finishes:
+  - If `isLoggedIn` is `true` (authenticated) -> Redirects to `/dashboard` using `router.replace('/dashboard')`.
+  - If `isLoggedIn` is `false` (unauthenticated) -> Redirects to `/login` using `router.replace('/login')`.
+- `router.replace` is chosen over `router.push` to avoid cluttering the browser history with redirecting URLs, ensuring a smooth browser back-button behavior.
+
+### 2. Authentication Flow & Protection
+- **Dashboard Access**: Protected via `ProtectedRoute` layout wrapper. Unauthenticated users visiting `/dashboard` are immediately redirected to `/login`.
+- **Auth Page Redirection**: Authenticated users visiting `/login` or `/register` are automatically redirected away to `/dashboard` upon context detection of `isLoggedIn`.
+- **Page Refreshes**: On page refresh, the user's session is validated and restored via `refreshAccessToken()` and `getProfile()` services in `AuthContext` before the loading state resolves.
+- **Logout Flow**: Logging out clears credentials and returns the user to `/login`.
+
+### 3. Build & Lint Verification
+- **ESLint**: Completed successfully with zero errors (`npm run lint`).
+- **Production Build**: Completed successfully with zero compile or type errors (`npm run build`).
+
+---
+
+## Phase 6: Codebase Cleanup & Production Optimization
+
+### 1. Cleanup Summary
+We reviewed all migrated modules and components to ensure they conform to strict Next.js App Router best practices, maintain clean file separation, and have zero dead code.
+
+### 2. Files Modified
+- [MODIFY] [`walkthrough.md`](file:///Users/medhabhardwaj/Desktop/devpulse-next/walkthrough.md) - Documented Phase 6 codebase cleanup and performance optimization details.
+
+### 3. Optimizations & Architecture Improvements
+- **Unused/Dead Code Removal**: Inspected imports, variables, and stubs across all client/server components. Ensured that zero unused variables or dead logic remained.
+- **Folder Standardization**: Verified directories (`app/`, `components/dashboard/`, `components/panels/`, `components/shared/`, `components/auth/`, `hooks/`, `context/`, `services/`, `lib/`, and `styles/`) are fully standardized and aligned.
+- **Rendering Optimization**:
+  - Ensured that only files using React hooks (`useState`, `useEffect`), router interactions (`useRouter`), transition states (`useTransition`), or browser APIs carry `'use client'`.
+  - Presentation components (e.g. `OverviewPanel`, `UsersPanel`, `ContactPanel`, `Badge`, `StatCard`, `SectionTitle`) stay strictly as **Server Components** to decrease client bundle sizes and optimize time-to-interactive.
+- **API Services Standardization**: Checked and confirmed that all API services throw meaningful errors, log network failures properly, and avoid duplicate fetching logic.
+- **Authentication Flow Integration**: Checked the access token storage (`lib/tokenStorage.js`), cookie exchange configurations, refresh flows, and protected layout routing (`components/auth/ProtectedRoute.jsx`). Authenticated users are correctly redirected away from auth pages, while unauthenticated users are blocked from dashboard paths.
+
+### 4. Build & Lint Verification
+- **ESLint**: Runs successfully with zero warnings/errors (`npm run lint`).
+- **Production Build**: Compiles successfully with zero warnings/errors (`npm run build`).
+

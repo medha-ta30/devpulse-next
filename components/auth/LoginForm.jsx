@@ -3,12 +3,14 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { Eye, EyeOff } from 'lucide-react';
 import { loginUser } from '@/services/auth';
 import { useAuth } from '@/hooks/useAuth';
 
 export default function LoginForm() {
   const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [message, setMessage]   = useState('');
   const { login, isLoggedIn } = useAuth();
@@ -60,14 +62,25 @@ export default function LoginForm() {
 
         <div className="auth-form-group">
           <label>Password</label>
-          <input
-            className="auth-input"
-            type="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            required
-          />
+          <div className="auth-password-field">
+            <input
+              className="auth-input auth-password-input"
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Enter your password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+            />
+
+            <button
+              type="button"
+              className="auth-password-toggle"
+              onClick={() => setShowPassword(prev => !prev)}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
         </div>
 
         <div className="auth-checkbox">

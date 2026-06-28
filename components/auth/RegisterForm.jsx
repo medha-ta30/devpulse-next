@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { Eye, EyeOff } from 'lucide-react';
 import { registerUser } from '@/services/auth';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -13,6 +14,7 @@ export default function RegisterForm() {
   const [name, setName]         = useState('');
   const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage]   = useState('');
   const [loading, setLoading]   = useState(false);
 
@@ -110,14 +112,24 @@ export default function RegisterForm() {
 
         <div className="auth-form-group">
           <label>Password</label>
-          <input
-            className="auth-input"
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            placeholder="••••••••"
-            required
-          />
+          <div className="auth-password-field">
+            <input
+              className="auth-input auth-password-input"
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              placeholder="••••••••"
+              required
+            />
+            <button
+              type="button"
+              className="auth-password-toggle"
+              onClick={() => setShowPassword(prev => !prev)}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
 
           {password.length > 0 && (
             <div style={{ marginTop: '8px' }}>

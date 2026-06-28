@@ -1,10 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 import { resetPassword } from '@/services/auth';
 
 export default function ResetPasswordForm({ token }) {
   const [newPassword, setNewPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState('');
 
   async function handleSubmit(e) {
@@ -41,15 +43,22 @@ export default function ResetPasswordForm({ token }) {
 
         <div className="auth-form-group">
           <label>New Password</label>
-
-          <input
-            className="auth-input"
-            type="password"
-            value={newPassword}
-            onChange={(e) =>
-              setNewPassword(e.target.value)
-            }
-          />
+          <div className="auth-password-field">
+            <input
+              className="auth-input auth-password-input"
+              type={showPassword ? 'text' : 'password'}
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <button
+              type="button"
+              className="auth-password-toggle"
+              onClick={() => setShowPassword(prev => !prev)}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
         </div>
 
         <button
